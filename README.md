@@ -65,7 +65,7 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 
 | Method | Params | Description |
 | --- | --- | --- |
-| `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, [example]([structure](https://github.com/iacoposk8/Ajax-Chat#update-messages) |
+| `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, [example](https://github.com/iacoposk8/Ajax-Chat#update-messages) |
 | `set_public_key` | public_key | When the public key is generated, here you can save the key |
 | `new_mex` | message | When arrive a new message, here you can show a notification (in phonegap for example) |
 | `chat_open` | chat_id | When user open a chat, here you can hide a notification (in phonegap for example) |
