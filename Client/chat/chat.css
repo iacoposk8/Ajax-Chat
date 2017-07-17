@@ -1,0 +1,249 @@
+.talktext,
+.emoji-wysiwyg-editor,
+#error *,
+.chat_user,
+.chat_date,
+#chat_search_input,
+#chat_menu_block *,
+.button,
+#chat_custom_content,
+#chat_custom_content *{
+	font-family: 'Lato', sans-serif;
+	text-transform: initial;
+	font-size:15px;
+}
+#profile_container{
+	font-size: 20px;
+	font-weight:bold;
+}
+#chat_menu_block{
+	background: #fff none repeat scroll 0 0;
+	border: 1px solid #888;
+	border-radius: 5px;
+	color: #000;
+	margin-top: 2px;
+	padding: 10px 20px;
+	position: absolute;
+	right: 10px;
+	text-align: right;
+	z-index:99999;
+}
+#chat_menu_block > div {
+	margin:9px 0;
+}
+#chat_add {
+    position:absolute;
+	font-size:50px;
+	bottom:10px;
+	right:10px;
+	cursor:pointer;
+}
+#chat_header{
+	padding:15px;
+	overflow:hidden;
+}
+#chat_back, #chat_menu {
+	font-size:50px;
+	color:#fff;
+	cursor:pointer;
+}
+#chat_menu{
+	float:right;
+}
+#chat_message{
+	overflow:auto;
+}
+#chat_container{
+	overflow:auto;
+	padding:20px;
+}
+#loading{
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:2147483647;
+	background:rgba(255,255,255,0.7);
+}
+#loading > div {
+    display: table-cell;
+    vertical-align: middle;
+}
+#chat_new_message{
+	position:relative;
+}
+.emoji-wysiwyg-editor {
+    padding: 6px 45px 6px 45px;
+}
+.emoji-picker-icon {
+    right: auto;
+	left:10px;
+	font-size:25px !important;
+	margin-top:5px;
+}
+.emoji-menu{
+	right:auto;
+	bottom:50px;
+}
+#chat_send{
+	position:absolute;
+	top:12px;
+	right:12px;
+	cursor:pointer;
+	font-size:25px;
+}
+#error{
+	background:rgba(0,0,0,0.7);
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	left:0px;
+	display:table;
+}
+#error > div{
+	display: table-cell;
+    vertical-align: middle;
+}
+#error > div > div{
+	background:#fff;
+	padding:20px;
+	max-width: 300px;
+	max-height: 75px;
+	margin:0 auto;
+	text-align:center;
+	border-radius:6px;
+}
+.tri-right .chat_info {
+    bottom: 7px;
+    position: absolute;
+    right: 30px;
+}
+.talktext{
+	margin-bottom:10px;
+}
+.chat_status span {
+    color:#555;
+	margin-top:2px;
+}
+.chat_status{
+	float:right;
+}
+.chat_date{
+	float:left;
+	padding-right:7px;
+}
+.fa-clock-o::before {
+    margin-right: -15px;
+}
+.chat_user_img{
+   object-fit: cover;
+   width: 50px;
+   height:50px;
+   border-radius:50px;
+   float:left;
+   margin-right:25px;
+}
+.chat_user{
+	border-bottom:1px solid #ddd;
+	padding:15px 0;
+	overflow:hidden;
+	cursor:pointer;
+}
+.chat_username{
+	color:#000;
+	font-size:20px;
+	font-weight:bold;
+}
+.tri-left{
+	float:right;
+}
+.tri-right{
+	float:left;
+}
+.fa-check{
+	position:absolute;
+	margin-top:-16px;
+}
+.fa-check2{
+	margin-left:6px;
+}
+.chat_phrase{
+	color:#888;
+	font-size:14px;
+}
+.chat_phrase {
+	float: left;
+	width: calc(100% - 100px);
+	overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#chat_new_message_sym{
+	color:#2ecc71;
+	font-size:25px;
+}
+#chat_search_input{
+	border:1px solid #666;
+	border-radius:5px;
+	position:absolute;
+	right:75px;
+	top:20px;
+	height:40px;
+	width:60%;
+	padding:10px 20px;
+}
+.chat_hidden {
+    height: 0;
+    margin-top: 0;
+	margin-bottom: 0;
+    padding: 0;
+    visibility: hidden;
+}
+#profile_container #custom-file-upload #profile_img{
+	display:none;
+}
+#profile_container #custom-file-upload {
+	cursor:pointer;
+}
+#icon_change_img{
+	width:30px;
+	height:30px;
+	border-radius:15px;
+	color:#fff;
+	display:table;
+	text-align:center;
+	position:absolute;
+	margin-top:-30px;
+	
+	-webkit-box-shadow: 2px -2px 2px 0px rgba(0, 0, 0, 0.85);
+	-moz-box-shadow:    2px -2px 2px 0px rgba(0, 0, 0, 0.85);
+	box-shadow:         2px -2px 2px 0px rgba(0, 0, 0, 0.85);
+}
+#icon_change_img > span{
+	display: table-cell;
+	vertical-align: middle;
+}
+.button {
+	background:#2ecc71;
+	display: inline-block;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+	cursor: pointer;
+	padding: 6px 20px 6px 20px;
+	border: none;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	color: rgba(255,255,255,0.9);
+	-o-text-overflow: clip;
+	text-overflow: clip;
+	-webkit-box-shadow: 1px 1px 0 0 #599f3f ;
+	box-shadow: 1px 1px 0 0 #599f3f ;
+	text-shadow: 1px 1px 0 rgba(168,168,168,0.66) ;
+	-webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+	-moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+	-o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+	transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+}

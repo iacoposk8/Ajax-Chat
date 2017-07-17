@@ -1,0 +1,78 @@
+<script src="jquery-1.10.2.js"></script>
+<script src="chat/chat.js" id="chatscript"></script>
+
+<!-- Begin emoji-picker JavaScript -->
+<script src="chat/emoji-picker/js/config.js"></script>
+<script src="chat/emoji-picker/js/util.js"></script>
+<script src="chat/emoji-picker/js/jquery.emojiarea.js"></script>
+<script src="chat/emoji-picker/js/emoji-picker.js"></script>
+<!-- End emoji-picker JavaScript -->
+
+<script language="JavaScript" type="text/javascript" src="chat/wwwtyro-cryptico-9291ece/jsbn.js"></script>
+<script language="JavaScript" type="text/javascript" src="chat/wwwtyro-cryptico-9291ece/random.js"></script>
+<script language="JavaScript" type="text/javascript" src="chat/wwwtyro-cryptico-9291ece/hash.js"></script>
+<script language="JavaScript" type="text/javascript" src="chat/wwwtyro-cryptico-9291ece/rsa.js"></script>
+<script language="JavaScript" type="text/javascript" src="chat/wwwtyro-cryptico-9291ece/aes.js"></script>
+<script language="JavaScript" type="text/javascript" src="chat/wwwtyro-cryptico-9291ece/api.js"></script>	
+
+<script type='text/javascript' src='https://maps.google.com/maps/api/js?sensor=false'></script>
+
+<div id="chat" style="border:1px solid #333;"></div>
+<script>
+$(document).ready(function(){
+	$("#chat").chat({
+		path: "chat",
+		server: "http://XXXXXXXXXXXXXXXXXX/chat.php",
+		height: "500px",
+		color: ["#2ecc71","#3498db","#e2ffc4","#eee"],
+		debug:false,
+		lang: "en",
+		load_message: 10,
+		locale: true,
+		custom_item_menu: ["Info", "<strong>About</strong><br />Lorem ipsum...."],
+		view: "list", //map
+		messages: {"1":{"YEwEMSXL4ugpav7hoAalwfHl+JNXnmHAfDYupbvf9x0z4z5RhTaAwapd3IW77AMT9fsAJCLKhmAsv1sEqVK45LGaG/pMoZc1HFYBSfO0t66KbYxWXIWsIFozt9O/4Y3x6Zzj5eOXzc0pPsUHNDx2etmGp72Ti0k2ir5bFFLug8s=?MF5dj/BrbrXeJ6CCceZt2Yxfn7DvBzbPDjRr2f861xdRyWyXC19MneozIFxcLDJaSXnfNl5XNgDin1y4OgKM64/Ocs/hZKQU/WX5XMZRXvcEoyVkpwA6uVaNVXrp+2OoyXTMakEbcuGjmF30SSECyVHY1vd7CWHA7YPIiLfq7JmOhpYoecPdZn9d9/QjV3m3BwoBBKeVCylmYuDXqZwuODACAuMTCi5iKhodaoUOCIjtTR0vE7rHaLmRItzy94ZJCzMED4D+lxsHt8Ejfrbw+0b24kbEelz5/NvMfnuFmD9ZzxJcwE4bgOBFIBJWTmw2ofbA+JFhnfLjQ2DRQ5DHAg==":{"id_mex":"1","from_user":"1","to_user":"2","status":"3","date":"2017-07-17 04:15:36"},"last_message":"iV6OeK/f//D5P+GpawvdjcIdMdAYTyhG+g33U0+vxrgMAFEQGY3GzLji+l1rjjXfeoBX42tBA+67bsJqFf81x6agKZm+0ZI5Bbhf5Ll6V3OTqY3kZW26Rg+KIq3xbHK4usTUbLs/aNDvH+L8yZgbJLqv8R3ToekLVGtpA7Cwxi8=?7FvvKZND4DUEr6eoseZ863TJaZl8AkVV6f21MRdOf2C200w6JCGz/WOYEseem1IeCdsytAVMcez/uFt4TCEV1IeFcRH9UaeBNJwENVhO64bhEenKuGkH1ooEFE7z9el3uA8M6/qI7o81OK/P+uxz51izI0rku/kgl68QugiZCuEUWmDx5KitDpPAYJfzDNA4KU/BC/Mh1Xk6gEUBtMZIsr2bqtLd2a1cz1A+x5rkfN4e1+Mxz1V6h9fdBHUJvK0Axgu3BHZrjxWHLUsz0LMGnz4qRsl6gRLOUPe/fPLS+igTBQLWLia5gYcpvp/CNU0Cd7FrpnY0COSGgOf7uNYG38X1/nrlYqhlaxzCYK8p0TmGa0bbg+s8Qo/sbBkIA1c5","counter":7,"from_counter":0,"CdUC4hh99Raqz899qLEbyAA951Fu5LigA31U4H3rcEckEa+ncVCSZg5TnUUdjumD3ExVc3VNuksaV9JAPPmMPkDlElYUvgoa36gq0y4aGPZCV9lX2Gcjc19CtIvDpErjKWVF0XKYEJRBrJgVD/ecdXW3gsnpcQtpzLm18ocJ1qs=?N+Kmoc4VWpgvmeblr3eJfCqS1pcx6RaGEzWUcfIUb1m5uVkTVgtG+CGqIPv/3jvk":{"id_mex":"4","from_user":"2","to_user":"1","status":"3","date":"2017-07-17 04:15:50"},"ARGvzxsYyhDfxbS1B4LC55gKG8BRK3NfHVe/5JVKhINsoTWH/iLTBFxxZ2d5NGqJ0XV+QKYZBzIXIXH7NAbJ7glDmqUnIZdqh4fclxTtb3TRatVmoEZu94j5YkETq8pmsTEKkXvV8z31FYjpfHlFu3uZXtEGReqfydOhImgBW5w=?RItztnf+M3MRfvnPHFE70g9whcgxOf4z051nqx/SDeYz1QR3lh7jokxu5qHwxhpT":{"id_mex":"5","from_user":"1","to_user":"2","status":"3","date":"2017-07-17 04:16:06"},"iV6OeK/f//D5P+GpawvdjcIdMdAYTyhG+g33U0+vxrgMAFEQGY3GzLji+l1rjjXfeoBX42tBA+67bsJqFf81x6agKZm+0ZI5Bbhf5Ll6V3OTqY3kZW26Rg+KIq3xbHK4usTUbLs/aNDvH+L8yZgbJLqv8R3ToekLVGtpA7Cwxi8=?7FvvKZND4DUEr6eoseZ863TJaZl8AkVV6f21MRdOf2C200w6JCGz/WOYEseem1IeCdsytAVMcez/uFt4TCEV1IeFcRH9UaeBNJwENVhO64bhEenKuGkH1ooEFE7z9el3uA8M6/qI7o81OK/P+uxz51izI0rku/kgl68QugiZCuEUWmDx5KitDpPAYJfzDNA4KU/BC/Mh1Xk6gEUBtMZIsr2bqtLd2a1cz1A+x5rkfN4e1+Mxz1V6h9fdBHUJvK0Axgu3BHZrjxWHLUsz0LMGnz4qRsl6gRLOUPe/fPLS+igTBQLWLia5gYcpvp/CNU0Cd7FrpnY0COSGgOf7uNYG38X1/nrlYqhlaxzCYK8p0TmGa0bbg+s8Qo/sbBkIA1c5":{"id_mex":"8","from_user":"2","to_user":"1","status":"3","date":"2017-07-17 04:16:17","userlist":"1","last_message":"iV6OeK/f//D5P+GpawvdjcIdMdAYTyhG+g33U0+vxrgMAFEQGY3GzLji+l1rjjXfeoBX42tBA+67bsJqFf81x6agKZm+0ZI5Bbhf5Ll6V3OTqY3kZW26Rg+KIq3xbHK4usTUbLs/aNDvH+L8yZgbJLqv8R3ToekLVGtpA7Cwxi8=?7FvvKZND4DUEr6eoseZ863TJaZl8AkVV6f21MRdOf2C200w6JCGz/WOYEseem1IeCdsytAVMcez/uFt4TCEV1IeFcRH9UaeBNJwENVhO64bhEenKuGkH1ooEFE7z9el3uA8M6/qI7o81OK/P+uxz51izI0rku/kgl68QugiZCuEUWmDx5KitDpPAYJfzDNA4KU/BC/Mh1Xk6gEUBtMZIsr2bqtLd2a1cz1A+x5rkfN4e1+Mxz1V6h9fdBHUJvK0Axgu3BHZrjxWHLUsz0LMGnz4qRsl6gRLOUPe/fPLS+igTBQLWLia5gYcpvp/CNU0Cd7FrpnY0COSGgOf7uNYG38X1/nrlYqhlaxzCYK8p0TmGa0bbg+s8Qo/sbBkIA1c5"}}},
+		updated_messages: function(messages, success){
+			//When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, example:
+			/*$.ajax({
+				url: "http://localhost/savechat.php",
+				method: "POST",
+				data: {set: messages]},
+				success: function(){
+					success(messages);
+				}
+			});*/
+		},
+		set_public_key: function(public_key){
+			//When the public key is generated, here you can save the key
+		},
+		new_mex: function(mex){
+			//When arrive a new message, here you can show a notification (in phonegap for example)	
+		},
+		chat_open: function(chat_id){
+			//When user open a chat, here you can hide a notification (in phonegap for example)	
+		},
+		profile_update: function(profile){
+			//When profile is updated, here you can save user data
+		},
+		current_user: {
+			id: "2",
+			name: "Test",
+			img: "data:image/png;base64,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",
+			phrase: "Hi! I am a new user :)",
+			key: "p,4T5y8AL(t8!{7R"
+		},
+		list: {
+			"1":{
+				id: 1,
+				lat: 40.788993,
+				lon: -73.9538351,
+				name: "Index",
+				img: "data:image/png;base64,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",
+				phrase: "Hi! I am a new user :)",
+				public_key: "qyb7CzFA7hJG/T2tp2IuhSyy0qFYZdR2ixV+hPNgwvCRkldH4XtMfWLMLt5HfjBmGf5EPB1ttw74s5WfRw4xdY9OUcTwp9eKWDPl6fnCqDOnEv0g0kaMQPFQJOJSIpKo8G5JihnVM9oCg9q/fbkwHdBlr2QyskkkjhGsWIYTJZM="
+			}
+		}
+	});
+});
+</script>
