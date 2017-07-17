@@ -5,6 +5,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 - [Installation](https://github.com/iacoposk8/Ajax-Chat#installation)
 - [Method](https://github.com/iacoposk8/Ajax-Chat#method)
 - [Property](https://github.com/iacoposk8/Ajax-Chat#property)
+- [Structures](https://github.com/iacoposk8/Ajax-Chat#structures)
 - [TODO](https://github.com/iacoposk8/Ajax-Chat#todo)
 - [Libraries of this project](https://github.com/iacoposk8/Ajax-Chat#libraries-of-this-project)
 
@@ -43,8 +44,7 @@ CREATE TABLE IF NOT EXISTS chat_messages (
 ```
 
 ### 2. Server
-Upload "server" folder on your remote server
-Then open the file Server/chat.php and edit these lines for database connection:
+Upload "server" folder on your remote server, then open the file Server/chat.php and edit these lines for database connection:
 
 ```
 $col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
@@ -53,8 +53,7 @@ $password = "XXXXXXXXXXXXXXXXXX";
 ```
 
 ### 3. Client
-Open Client/index.html and Client/test.html
-and change these line for point to remote php file just uploaded
+Open Client/index.html and Client/test.html and change these line for point to remote php file just uploaded
 
 ```
 server: "http://XXXXXXXXXXXXXXXXXX/chat.php",
@@ -66,17 +65,7 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 
 | Method | Params | Description |
 | --- | --- | --- |
-| `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, example:
-	updated_messages: function(messages, success){
-		$.ajax({
-			url: "http://localhost/savechat.php",
-			method: "POST",
-			data: {set: messages]},
-			success: function(){
-				success(messages);
-			}
-		});
-	} |
+| `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, [example]([structure](https://github.com/iacoposk8/Ajax-Chat#update-messages) |
 | `set_public_key` | public_key | When the public key is generated, here you can save the key |
 | `new_mex` | message | When arrive a new message, here you can show a notification (in phonegap for example) |
 | `chat_open` | chat_id | When user open a chat, here you can hide a notification (in phonegap for example) |
@@ -98,15 +87,26 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 | `custom_item_menu` | ["Info", "<strong>About</strong><br />Lorem ipsum...."] | This add a new item menu "Info" when write inside "<strong>About</strong><br />Lorem ipsum...." |
 | `view` | list | you can view the user like a "list" or in a "map" (for this you have to set "lat" and "lon" in "list" property) |
 | `messages` | | if "locale" is true and with "updated_messages" method you have saved the messages, you can restore it in this property |
-| `current_user` | | Current user info, structure:
+| `current_user` | | Current user info: [structure](https://github.com/iacoposk8/Ajax-Chat#current-user) |
+| `list` | | List of chat users, [structure](https://github.com/iacoposk8/Ajax-Chat#list-users) |
+
+## Structures
+
+### Current user
+
+```
 {
 	id: "number", //user's id
 	name: "string", //user's name
 	img: "data:image/*;base64", //user's image in base64
 	phrase: "string", //user's personal phrase
 	key: "string" //key for generate the encryption key
-} |
-| `list` | | List of chat users, structure:
+}
+```
+
+### List users
+
+```
 {
 	"number": //user's id
 	{
@@ -122,7 +122,23 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 	"number": { ....... },
 	"number": { ....... },
 	.......
-} |
+}
+```
+
+### Update messages
+
+```
+updated_messages: function(messages, success){
+	$.ajax({
+		url: "http://localhost/savechat.php",
+		method: "POST",
+		data: {set: messages]},
+		success: function(){
+			success(messages);
+		}
+	});
+}
+```
 
 ## TODO
 - Create groups
