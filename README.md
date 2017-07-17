@@ -1,1 +1,18 @@
 # Ajax-Chat
+
+##Install database
+```
+CREATE TABLE IF NOT EXISTS chat_messages (
+	id_mex BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id_pair BIGINT NOT NULL,
+	from_user BIGINT NOT NULL,
+	to_user BIGINT NOT NULL,
+	user_chat BIGINT NOT NULL,
+	message TEXT NOT NULL,
+	status INT(1) NOT NULL,
+	`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`date2` TIMESTAMP NOT NULL,
+	`date3` TIMESTAMP NOT NULL
+);
+
+```
