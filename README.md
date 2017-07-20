@@ -14,7 +14,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 2. Search chat, user, and messages
 3. Edit profile (name, personal message, personal photo
 4. Block user
-5. Choose color
+5. Choose colors
 6. Choose languages (English and Italian)
 7. Choose messages storage (local or remote)
 8. Add custom menu

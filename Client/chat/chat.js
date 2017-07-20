@@ -479,17 +479,15 @@
 					}
 				}
 					
-				if(typeof current_chat === "undefined"){
-					var data = { chat_user : {userid:options.current_user.id} };
+				if(typeof current_chat === "undefined")
 					var load = false;
-				}else{
-					var data = { chat_user : {userid:options.current_user.id, all:1} };
+				else
 					var load = true;
-				}
+
 				A.request({
 					id: "chat_user_"+options.current_user.id,
 					load: load,
-					data: data,
+					data: { chat_user : {userid:options.current_user.id} },
 					success: function(e){
 						new_size();
 						update_success = true;
@@ -604,8 +602,7 @@
 					$block.css("display","none");
 					$unblock.css("display","none");
 					$back.css("display","none");
-					if(typeof options.custom_item_menu !== "undefined")
-						$custom.css("display","block");
+					$custom.css("display","block");
 				}
 				if(type == "chat"){
 					$search.css("display","block");
@@ -613,8 +610,7 @@
 					$block.css("display","block");
 					$unblock.css("display","none");
 					$back.css("display","inline");
-					if(typeof options.custom_item_menu !== "undefined")
-						$custom.css("display","block");
+					$custom.css("display","block");
 				}
 				if(type == "chat_block"){
 					$search.css("display","block");
@@ -622,8 +618,7 @@
 					$block.css("display","none");
 					$unblock.css("display","block");
 					$back.css("display","inline");
-					if(typeof options.custom_item_menu !== "undefined")
-						$custom.css("display","block");
+					$custom.css("display","block");
 				}
 				if(type == "generic"){
 					$search.css("display","none");
@@ -631,8 +626,7 @@
 					$block.css("display","none");
 					$unblock.css("display","none");
 					$back.css("display","inline");
-					if(typeof options.custom_item_menu !== "undefined")
-						$custom.css("display","block");
+					$custom.css("display","block");
 				}
 				set_menu_last_type = type;
 			}
@@ -715,8 +709,9 @@
 			var $profile = $('<div id="chat_profile">'+lang.profile+'</div>').appendTo($menu);
 			var $block = $('<div id="chat_block">'+lang.block+'</div>').appendTo($menu);
 			var $unblock = $('<div id="chat_unblock" style="display:none;">'+lang.unblock+'</div>').appendTo($menu);
-			if(typeof options.custom_item_menu !== "undefined")
-				var $custom = $('<div id="chat_custommenu">'+options.custom_item_menu[0]+'</div>').appendTo($menu);
+			if(typeof options.custom_item_menu === "undefined")
+				options.custom_item_menu = ["Credits","<h1><strong>Credits</strong></h1>"];
+			var $custom = $('<div id="chat_custommenu">'+options.custom_item_menu[0]+'</div>').appendTo($menu);
 			
 			set_menu("main");
 			
@@ -742,12 +737,10 @@
 			});
 			
 			//custom menu item
-			if(typeof options.custom_item_menu !== "undefined"){
-				$custom.click(function(){
-					set_menu("generic");
-					$container.html('<div id="chat_custom_content">'+options.custom_item_menu[1]+'</div>');
-				});
-			}
+			$custom.click(function(){
+				set_menu("generic");
+				$container.html('<div id="chat_custom_content">'+options.custom_item_menu[1]+'<br />Chat powered by <a href="https://github.com/iacoposk8/Ajax-Chat">iacoposk8</a></div>');
+			});
 			
 			//edit profile
 			$profile.click(function(){

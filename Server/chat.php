@@ -10,9 +10,10 @@
 	
 	header('Content-Type: application/json');
 	
-	$col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
-	$username = "XXXXXXXXXXXXXXXXXX";
-	$password = "XXXXXXXXXXXXXXXXXX";
+	$col = 'mysql:host=custsql-spro-ipg04.ipagemysql.com;dbname=chat';
+	$username = "chat_user";
+	$password = "LSyZ&[dbU,E6>tNb";
+	$debug = false;
 	
 	try {
 		$db = new PDO($col , $username, $password);
@@ -24,6 +25,14 @@
 		global $db;
 		foreach($vals as $val)
 			$query = preg_replace('/%/', $db->quote($val), $query, 1);
+			
+		global $debug;
+		if($debug){
+			$log = fopen("log.txt", "a+") or die("Unable to open file!");
+			fwrite($log, $query."\n");
+			fclose($log);
+		}	
+		
 		return $query;
 	}
 	function select($query,$vals){
@@ -81,17 +90,12 @@
 		die(json_encode(array("id"=>execsql("INSERT INTO chat_messages (id_pair, from_user, to_user, user_chat, message, status) VALUES (%, %, %, %, %, %)", array($id_pair, $_POST["send_message"]["from"],$_POST["send_message"]["to"],$_POST["send_message"]["from"],$_POST["send_message"]["mex_for_me"], 1)))));
 	}
 	if(isset($_POST["chat_user"])){
-		if(!isset($_POST["chat_user"]["all"])){
-			$where = 'user_chat = % AND status >= %';
-			$value = array($_POST["chat_user"]["userid"],1);
-		}else{ //init: get all messages
-			$where = 'user_chat = %';
-			$value = array($_POST["chat_user"]["userid"]);
+		$ids = "";
+		foreach(select('SELECT id_pair FROM chat_messages WHERE to_user = % AND status = %', array($_POST["chat_user"]["userid"],1)) as $id){
+			$ids .= $id["id_pair"].",";
 		}
-		
-		$ret = json_encode(select('SELECT * FROM chat_messages WHERE '.$where, $value)); 
-		execsql('UPDATE chat_messages SET status = IF(status = 1, 2, status), date2 = NOW() WHERE '.$where, $value);
-		die($ret);
+		execsql('UPDATE chat_messages SET status = 2, date2 = NOW() WHERE id_pair IN ('.substr($ids,0,-1).')', array());
+		die(json_encode(select('SELECT * FROM chat_messages WHERE user_chat = %', array($_POST["chat_user"]["userid"]))));
 	}
 	if(isset($_POST["message_read"])){
 		$id_pair=select('SELECT id_pair FROM chat_messages WHERE id_mex = %',array($_POST["message_read"]["id_mex"]));
