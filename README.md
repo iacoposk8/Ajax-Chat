@@ -1,6 +1,7 @@
 # Ajax Chat
 Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible with [Phonegap](https://phonegap.com/)
 
+- [Screenshots](https://github.com/iacoposk8/Ajax-Chat#screenshots)
 - [Features](https://github.com/iacoposk8/Ajax-Chat#features)
 - [Installation](https://github.com/iacoposk8/Ajax-Chat#installation)
 - [Method](https://github.com/iacoposk8/Ajax-Chat#method)
@@ -8,6 +9,9 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 - [Structures](https://github.com/iacoposk8/Ajax-Chat#structures)
 - [TODO](https://github.com/iacoposk8/Ajax-Chat#todo)
 - [Libraries of this project](https://github.com/iacoposk8/Ajax-Chat#libraries-of-this-project)
+
+## Screenshots
+![alt text](https://github.com/iacoposk8/Ajax-Chat/tree/master/Screenshots/phone.jpg)
 
 ## Features
 1. Create new chat, send message, read messagge etc... (obviously :D)

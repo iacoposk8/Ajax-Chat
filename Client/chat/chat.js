@@ -1,12 +1,14 @@
 /*****************************************************************/
 /*****************************************************************/
 /*****************************************************************/
-//migliorare grafica profilo, l'area del messaggio è troppo corta
+//fare screenshot per github
+
 //mettere notifiche silenziose
 //fare i gruppi
 //mettere lo stato online, sta scrivendo, ultimo accesso
-//Per risolvere il problema della paginazione nella chat al posto che renderizzare da 80 a 100 e aggiungere sopra da 60 a 80 cancellare tutto e fare da 60 a 100 sarà cmq lento ma l'utente sceglierà lui di vederle e nella situazione iniziale, sovrabbondante i messaggi verranno mostrati velocemente 
-//se non ci sono cambiamenti non dovrebbe aggiornare la lista delle chat, altrimenti quando si scrolla riparte dall'inizio
+//inviare file
+//condividere messaggi all'interno della chat e su altre chat
+//eliminare messaggi, info, stellina, copia
 /*****************************************************************/
 /*****************************************************************/
 /*****************************************************************/
@@ -237,19 +239,21 @@
 						var block_mex = '<div attr-srv-id="'+srvid+'" class="talk-bubble tri-right left-top">';
 					else
 						var block_mex = '<div attr-srv-id="'+srvid+'" class="talk-bubble tri-left right-top">';
-					
-					var chat_id = $("#chat_send").attr("attr-id");
-					var $block = get_mex_block(chat_id);
-					//console.log($block);
-					var $block_mex = $(block_mex).appendTo(get_mex_block(chat_id));
+
+					var $block_mex = $(block_mex).appendTo($("#chat_message"));
 
 					var status_elem = "";
 					if(fromto)
 						status_elem = '<div class="chat_info"><div class="chat_date">'+date+'</div><div class="chat_status"><span class="fa fa-clock-o"></span></div></div>';
+					else
+						status_elem = '<div class="chat_info"><div class="chat_date">'+date+'</div></div>';
 					$block_mex.html('<div class="talktext">'+mex+'</div>'+status_elem);
 				}
 				if(typeof status !== "undefined" && status != 0)
 					change_status(srvid,status);
+				
+				if ($("#chat_message").prop('offsetHeight') < $("#chat_message").prop('scrollHeight'))
+					$("#empty_space").height($("#empty_space").height()-($("#chat_message").prop('scrollHeight')-$("#chat_message").prop('offsetHeight')));
 				
 				scrollToElem($block_mex);
 				if(enter == 1){
@@ -296,22 +300,6 @@
 				if(stat=="3")
 					$stat.html('<span class="fa fa-check fa-check1" style="color:#3498db;"></span><span class="fa fa-check fa-check2" style="color:#3498db;"></span>');
 			}
-			
-			var pagination = false;
-			function get_mex_block(chat_id){
-				LOG("chat get_mex_block ",[chat_id]);
-				if(!pagination){
-					return $("#chat_message");
-				}else{
-					if(($("#chat_message").scrollTop() < scrolltopload && typeof options["messages"][chat_id] !== "undefined" && options["messages"][chat_id].counter >= options.load_message) || $('.chat_message_block').length == 0 ){
-						//console.log("create");
-						return $('<div class="chat_message_block">').prependTo($("#chat_message"));
-					}else{
-						//console.log("get");
-						return $('.chat_message_block').last();
-					}
-				}
-			}
 
 			var unread = {};
 			function show_all_messages(){
@@ -319,6 +307,7 @@
 				var chat_id = $("#chat_send").attr("attr-id");
 				var this_mex = options["messages"][chat_id];
 				
+				//pagination: set the first message to see (from_counter)
 				if(typeof options["messages"][chat_id] !== "undefined" && typeof options["messages"][chat_id]["from_counter"] === "undefined")
 					options["messages"][chat_id]["from_counter"] = options["messages"][chat_id].counter - options.load_message;
 				
@@ -330,7 +319,7 @@
 				}
 				
 				var count = 0;
-				for(var i in this_mex){	
+				for(var i in this_mex){
 					if(i == "[BLOCK_USER]"){
 						if(this_mex[i].from_user == options.current_user.id)
 							set_menu("chat_block");
@@ -342,7 +331,8 @@
 					
 					count++;
 					//console.log(count+" > "+options["messages"][chat_id].from_counter);
-					if(!pagination || (count > options["messages"][chat_id].from_counter)){						
+					if(count > options["messages"][chat_id].from_counter){
+						//console.log("*******************************");
 						if(options.current_user.id == this_mex[i].from_user)
 							var fromto = 1;
 						else
@@ -362,11 +352,11 @@
 						change_status(this_mex[i].id_mex,this_mex[i].status);
 				}
 	
-				$('.chat_message_block').each(function() {
+				/*$('.chat_message_block').each(function() {
 					var $this = $(this);
 					if($this.html().replace(/\s|&nbsp;/g, '').length == 0)
 						$this.remove();
-				});
+				});*/
 				
 				for(var i in waiting_mex)
 					waiting_mex[i].appendTo($("#chat_message"));
@@ -377,6 +367,7 @@
 				LOG("chat show_all_chat ",[]);
 				var last_mexs = [];
 				//if($add.css("display")!="none" && $("#edit_profile_btn").length==0 && typeof options.messages !== "undefined" && $search_input.val()==""){
+					//get all last messages
 					for(var i in options.messages){
 						var add_mex = options.messages[i][options.messages[i].last_message];
 						add_mex.userlist = i;
@@ -384,6 +375,7 @@
 						last_mexs.push(add_mex);
 					}
 				
+					//order last messages
 					for(var i in last_mexs){
 						for(var j in last_mexs){
 							if(last_mexs[i].date > last_mexs[j].date){
@@ -393,7 +385,7 @@
 							}						
 						}	
 					}
-					
+
 					var userlist = "";
 					for(var i in last_mexs){
 						new_mex = false;
@@ -406,11 +398,11 @@
 								optnexmex.mex = cryptico.decrypt(add_mex.last_message, private_key).plaintext;
 								options.new_mex(optnexmex);
 							}
-						}
+						} 
 						userlist += html_row(options.list[last_mexs[i].userlist],cryptico.decrypt(add_mex.last_message, private_key).plaintext, new_mex);
 					}
 
-					if(typeof userlist !== "undefined" && userlist != "undefined")
+					if(typeof userlist !== "undefined" && userlist != "undefined" && $('#all_chat').html() != userlist)
 						$('#all_chat').html(userlist);
 				//}
 			}
@@ -683,7 +675,7 @@
 					"img": img
 				});
 			}
-			
+		
 			//generate private and public key
 			var private_key = cryptico.generateRSAKey(options.current_user.key, 1024);
 			var public_key = cryptico.publicKeyString(private_key);
@@ -748,18 +740,24 @@
 				set_menu("generic");
 				$container.html(''+
 					'<div id="profile_container">'+
-						lang.name+'<br />'+
-						'<input type="text" id="profile_name" value="'+options.current_user.name+'" /><br /><br />'+
-						lang.message+'<br />'+
-						'<input type="text" id="profile_phrase" value="'+options.current_user.phrase+'" /><br /><br />'+
-						lang.photo+'<br />'+
-						'<label id="custom-file-upload">'+
-							'<img src="'+options.current_user.img+'" /><br />'+
-							'<div id="icon_change_img" style="background:'+options.color[0]+';">'+
-								'<span class="fa fa-camera"></span>'+
-							'</div>'+
-							'<input type="file" accept="image/*" id="profile_img" /><br /><br />'+
-						'</label>'+
+						'<div id="chatedit_name_cont">'+
+							lang.name+'<br />'+
+							'<input type="text" id="profile_name" value="'+options.current_user.name+'" /><br /><br />'+
+						'</div>'+
+						'<div id="chatedit_phrase_cont">'+
+							lang.message+'<br />'+
+							'<input type="text" id="profile_phrase" value="'+options.current_user.phrase+'" /><br /><br />'+
+						'</div>'+
+						'<div id="chatedit_photo_cont">'+
+							lang.photo+'<br />'+
+							'<label id="custom-file-upload">'+
+								'<img src="'+options.current_user.img+'" /><br />'+
+								'<div id="icon_change_img" style="background:'+options.color[0]+';">'+
+									'<span class="fa fa-camera"></span>'+
+								'</div>'+
+								'<input type="file" accept="image/*" id="profile_img" /><br /><br />'+
+							'</label>'+
+						'</div>'+
 						'<a class="button" id="edit_profile_btn" style="background:'+options.color[0]+';">'+lang.save+'</a>'+
 					'</div>'+
 				'');
@@ -852,12 +850,18 @@
 							return false;
 						
 						if($("#chat_message").scrollTop() < scrolltopload){
+							$("#chat_message .talk-bubble").remove();
 							options["messages"][chat_id]["from_counter"] -= options.load_message;
 							
 							if(options["messages"][chat_id].from_counter < 0)
 								options["messages"][chat_id].from_counter = 0;
 							
 							show_all_messages();
+							
+							if(options["messages"][chat_id].from_counter > 0)
+								scrollToElem($("#chat_message .talk-bubble").eq(options.load_message));
+							else
+								scrollToElem($("#chat_message .talk-bubble").eq(0));
 						}
 					}, 250));
 				});
