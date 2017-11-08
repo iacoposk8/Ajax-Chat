@@ -26,6 +26,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 10. [End to end encryption](https://en.wikipedia.org/wiki/End-to-end_encryption)
 11. We have many smiles ;)
 12. Messages status (sent, delivered, read. like [whatsapp](https://faq.whatsapp.com/en/general/20951546))
+13. Load old messages when you scroll up
 
 ## Installation
 
@@ -69,30 +70,31 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 
 | Method | Params | Description |
 | --- | --- | --- |
-| `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, [example](https://github.com/iacoposk8/Ajax-Chat#update-messages) |
-| `set_public_key` | public_key | When the public key is generated, here you can save the key |
-| `new_mex` | message | When arrive a new message, here you can show a notification (in phonegap for example) |
-| `chat_open` | chat_id | When user open a chat, here you can hide a notification (in phonegap for example) |
-| `profile_update` | profile | When profile is updated, here you can save user data |
 | `change_list` | userlist | When the user list is changed you can launch this function to update it |
+| `chat_open` | chat_id | When user open a chat, here you can hide a notification (in phonegap for example) |
+| `new_mex` | message | When arrive a new message, here you can show a notification (in phonegap for example) |
+| `profile_update` | profile | When profile is updated, here you can save user data |
+| `set_public_key` | public_key | When the public key is generated, here you can save the key |
+| `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, [example](https://github.com/iacoposk8/Ajax-Chat#update-messages) |
 	
 ## Property
 
 | Property | Default | Description |
 | --- | --- | --- |
+| `color` | ["#2ecc71","#3498db","#e2ffc4","#eee"] | colors of the chat |
+| `current_user` | | Current user info: [structure](https://github.com/iacoposk8/Ajax-Chat#current-user) |
+| `custom_head` | | Here you can add the html code to add to the head |
+| `custom_item_menu` | ["Info", "<strong>About</strong><br />Lorem ipsum...."] | This add a new item menu "Info" when write inside "<strong>About</strong><br />Lorem ipsum...." |
+| `debug` | false | if you want to see console.log for debug |
+| `height` | 500px | height of the chat |
+| `lang` | en | languages available english (en) and italian (it) |
+| `list` | | List of chat users, [structure](https://github.com/iacoposk8/Ajax-Chat#list-users) |
+| `locale` | true | if you want to storage the message in locale set true, if you want all messages in the remote database set false |
+| `load_message` | 10 | Number of messages to load when you scroll up |
+| `messages` | | if "locale" is true and with "updated_messages" method you have saved the messages, you can restore it in this property |
 | `path` | chat | If you rename the path "Client/chat" you have to change also here |
 | `server` | http://XXXXXXXXXXXXXXXXXX/chat.php | This is the remote url (file Server/chat.php see the [installation](https://github.com/iacoposk8/Ajax-Chat#installation)) |
-| `height` | 500px | height of the chat |
-| `color` | ["#2ecc71","#3498db","#e2ffc4","#eee"] | colors of the chat |
-| `debug` | false | if you want to see console.log for debug |
-| `lang` | en | languages available english (en) and italian (it) |
-| `load_message` | 10 | Number of messages to load when you scroll up (this doesn't work, see [TODO](https://github.com/iacoposk8/Ajax-Chat#todo)) |
-| `locale` | true | if you want to storage the message in locale set true, if you want all messages in the remote database set false |
-| `custom_item_menu` | ["Info", "<strong>About</strong><br />Lorem ipsum...."] | This add a new item menu "Info" when write inside "<strong>About</strong><br />Lorem ipsum...." |
 | `view` | list | you can view the user like a "list" or in a "map" (for this you have to set "lat" and "lon" in "list" property) |
-| `messages` | | if "locale" is true and with "updated_messages" method you have saved the messages, you can restore it in this property |
-| `current_user` | | Current user info: [structure](https://github.com/iacoposk8/Ajax-Chat#current-user) |
-| `list` | | List of chat users, [structure](https://github.com/iacoposk8/Ajax-Chat#list-users) |
 
 ## Structures
 
@@ -147,7 +149,9 @@ updated_messages: function(messages, success){
 ## TODO
 - Create groups
 - Change status (online, writing, last login)
-- Load messages when you scroll up
+- Send file
+- Share messages / contents (inside and outside chat)
+- Delete, copy, info, star icone the message
 
 ## Libraries of this project
 - [jQuery](https://jquery.com/)

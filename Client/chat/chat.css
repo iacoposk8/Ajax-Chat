@@ -7,7 +7,8 @@
 #chat_menu_block *,
 .button,
 #chat_custom_content,
-#chat_custom_content *{
+#chat_custom_content *,
+#chat_name_to{
 	font-family: 'Lato', sans-serif;
 	text-transform: initial;
 	font-size:15px;
@@ -127,6 +128,13 @@
 .chat_status span {
     color:#555;
 	margin-top:2px;
+}
+#chat_name_to{
+	margin-top: -38px;
+	font-size:25px;
+	font-weight:bold;
+	color:#fff;
+	padding:0 30px;
 }
 .chat_status{
 	float:right;

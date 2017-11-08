@@ -1,17 +1,3 @@
-/*****************************************************************/
-/*****************************************************************/
-/*****************************************************************/
-//fare screenshot per github
-
-//mettere notifiche silenziose
-//fare i gruppi
-//mettere lo stato online, sta scrivendo, ultimo accesso
-//inviare file
-//condividere messaggi all'interno della chat e su altre chat
-//eliminare messaggi, info, stellina, copia
-/*****************************************************************/
-/*****************************************************************/
-/*****************************************************************/
 ( function($) {
 	jQuery.fn.chat = function(options) {
 		function LOG(mex, data){
@@ -35,11 +21,17 @@
 			LOG("chat change_list ",[list]);
 			options.list = list;
 			if(options.view == "map"){
-				coords_list = list;
+				coords_list = [];
+				for(var i in list){
+					if(list[i].available=="1"){
+						coords_list.push(list[i]);
+					}
+				}
 			} else {
 				userlist = '';
 				for(var i in list){
-					userlist += html_row(list[i],list[i].phrase);
+					if(list[i].available=="1")
+						userlist += html_row(list[i],list[i].phrase);
 				}
 			}
 		}
@@ -319,14 +311,22 @@
 				}
 				
 				var count = 0;
+				var is_block = false;
 				for(var i in this_mex){
-					if(i == "[BLOCK_USER]"){
+					if(i.indexOf("[BLOCK_USER") !== -1 && just_open){
 						if(this_mex[i].from_user == options.current_user.id)
 							set_menu("chat_block");
+						is_block = true;
+						continue;
+					}
+					if(i.indexOf("[UNBLOCK_USER") != -1 && just_open){
+						if(this_mex[i].from_user == options.current_user.id)
+							set_menu("chat");
+						is_block = false;
 						continue;
 					}
 					
-					if(typeof this_mex[i].status === "undefined")
+					if(typeof this_mex[i].status === "undefined" || is_block)
 						continue;
 					
 					count++;
@@ -358,6 +358,7 @@
 						$this.remove();
 				});*/
 				
+				just_open = false;
 				for(var i in waiting_mex)
 					waiting_mex[i].appendTo($("#chat_message"));
 			}
@@ -395,11 +396,12 @@
 							if(typeof last_date_new_mex === "undefined" || last_date_new_mex < last_mexs[i].date){
 								last_date_new_mex = last_mexs[i].date;
 								var optnexmex = last_mexs[i];
-								optnexmex.mex = cryptico.decrypt(add_mex.last_message, private_key).plaintext;
+								optnexmex.mex = cryptico.decrypt(last_mexs[i].last_message, private_key).plaintext;
 								options.new_mex(optnexmex);
 							}
 						} 
-						userlist += html_row(options.list[last_mexs[i].userlist],cryptico.decrypt(add_mex.last_message, private_key).plaintext, new_mex);
+						
+						userlist += html_row(options.list[last_mexs[i].userlist],cryptico.decrypt(last_mexs[i].last_message, private_key).plaintext, new_mex);
 					}
 
 					if(typeof userlist !== "undefined" && userlist != "undefined" && $('#all_chat').html() != userlist)
@@ -427,7 +429,7 @@
 			})();
 			
 			function isElementInView(element, fullyInView) {
-				LOG("chat isElementInView ",[element, fullyInView]);
+				LOG("chat isElementInView ",[fullyInView]); //if i put "element" in log i get error
 				if(element.length == 0)
 					return false;
 				var pageTop = $(window).scrollTop();
@@ -595,6 +597,7 @@
 					$unblock.css("display","none");
 					$back.css("display","none");
 					$custom.css("display","block");
+					$name.css("display","none");
 				}
 				if(type == "chat"){
 					$search.css("display","block");
@@ -603,22 +606,25 @@
 					$unblock.css("display","none");
 					$back.css("display","inline");
 					$custom.css("display","block");
+					$name.css("display","inline-block");
 				}
-				if(type == "chat_block"){
+				if(type == "chat_block"){ //when you block a user
 					$search.css("display","block");
 					$profile.css("display","none");
 					$block.css("display","none");
 					$unblock.css("display","block");
 					$back.css("display","inline");
 					$custom.css("display","block");
+					$name.css("display","inline-block");
 				}
-				if(type == "generic"){
+				if(type == "generic"){ //user menu for example
 					$search.css("display","none");
 					$profile.css("display","block");
 					$block.css("display","none");
 					$unblock.css("display","none");
 					$back.css("display","inline");
 					$custom.css("display","block");
+					$name.css("display","none");
 				}
 				set_menu_last_type = type;
 			}
@@ -628,11 +634,11 @@
 				var chat_id = $("#chat_send").attr("attr-id");
 				
 				if(type == "block"){
-					var mex_for_me = mex_for_you = "[BLOCK_USER]";
+					var mex_for_me = mex_for_you = "[BLOCK_USER"+Date.now()+"]";
 					set_menu("chat_block");
 				}
 				if(type == "unblock"){
-					var mex_for_me = mex_for_you = "[UNBLOCK_USER]";
+					var mex_for_me = mex_for_you = "[UNBLOCK_USER"+Date.now()+"]";
 					set_menu("chat");
 				}
 
@@ -691,8 +697,10 @@
 			var $loading = $('<div id="loading" style="display:none;"></div>').appendTo($self);
 			$('<div class="la-ball-clip-rotate-pulse la-dark la-3x"><div></div><div></div></div>').appendTo($loading);
 			
-			var $back = $('<div id="chat_back" class="fa fa-arrow-left" style="display:none;">').appendTo($header);
 			var $menubtn = $('<div id="chat_menu" class="fa fa-ellipsis-v">').appendTo($header);
+			var $back = $('<div id="chat_back" class="fa fa-arrow-left" style="display:none;">').appendTo($header);
+			var $name = $('<div id="chat_name_to" style="display:none;">').appendTo($header);
+			var $custom_head = $(options.custom_head).appendTo($header);
 			var $menu = $('<div id="chat_menu_block" style="display:none;">').appendTo($menubtn);
 			
 			var $search = $('<div id="chat_search">'+lang.search+'</div>').appendTo($menu);
@@ -803,6 +811,7 @@
 			});
 			
 			//back button
+			var just_open = false;
 			$back.click(function(){
 				LOG("chat $back.click ",[]);
 				if($("#chat_send").length != 0){
@@ -811,6 +820,7 @@
 						options["messages"][chat_id]["from_counter"] = undefined;
 				}
 				
+				just_open = false;
 				set_menu("main");
 				$container.html('<div id="all_chat"></div>');
 				$add.css("display","inline");
@@ -832,6 +842,9 @@
 				
 				$container.html("");
 				$add.css("display","none");
+				
+				$name.html(options["list"][chat_id]["name"]);
+				just_open = true;
 
 				var $message = $('<div id="chat_message">').appendTo($container);
 				$('<div id="empty_space" style="height:100%;">').appendTo($message);
