@@ -70,7 +70,7 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 
 | Method | Params | Description |
 | --- | --- | --- |
-| `change_list` | userlist | When the user list is changed you can launch this function to update it |
+| `change_list` | userlist, [latitude, longitude] | When the user list or geoposition (optional) is changed you can launch this function to update it |
 | `chat_open` | chat_id | When user open a chat, here you can hide a notification (in phonegap for example) |
 | `new_mex` | message | When arrive a new message, here you can show a notification (in phonegap for example) |
 | `profile_update` | profile | When profile is updated, here you can save user data |

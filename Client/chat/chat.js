@@ -17,9 +17,11 @@
 		
 		var userlist = '';
 		var coords_list;
-		this.change_list = function(list){
+		var last_gps_position = []
+		this.change_list = function(list, gps){
 			LOG("chat change_list ",[list]);
 			options.list = list;
+			last_gps_position = gps;
 			if(options.view == "map"){
 				coords_list = [];
 				for(var i in list){
@@ -27,12 +29,11 @@
 						coords_list.push(list[i]);
 					}
 				}
-			} else {
-				userlist = '';
-				for(var i in list){
-					if(list[i].available=="1")
-						userlist += html_row(list[i],list[i].phrase);
-				}
+			}
+			userlist = '';
+			for(var i in list){
+				if(list[i].available=="1")
+					userlist += html_row(list[i],list[i].phrase);
 			}
 		}
 		this.change_list(options.list);
@@ -52,25 +53,19 @@
 
 		function chatmap() {
 			LOG("chat chatmap ",[]);
-			var lat_sum = 0.0;
-			var lon_sum = 0.0;
-			var counsum = 0;
-			for(var i in coords_list){
-				lat_sum += parseFloat(coords_list[i].lat);
-				lon_sum += parseFloat(coords_list[i].lon);
-				counsum ++;
-			}
-			
-			if(lat_sum != 0.0 && lon_sum != 0.0){
-				lat_sum = parseFloat(lat_sum/counsum);
-				lon_sum = parseFloat(lon_sum/counsum);
 
-				var latlng = new google.maps.LatLng(lat_sum, lon_sum);
-				var options = { zoom: 9, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP};
-			} else {
+			if(last_gps_position.length == 2){
+				var latlng = new google.maps.LatLng(last_gps_position[0], last_gps_position[1]);
+			} else
 				var latlng = new google.maps.LatLng(48.1034995,12.262864);
-				var options = { zoom: 6, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP};
-			}
+			var options = { 
+				maxZoom: 20,
+				minZoom: 12,
+				zoom: 12, 
+				center: latlng, 
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			
 			// crea l'oggetto mappa
 			var map = new google.maps.Map($("#chatmap")[0], options);
 
@@ -82,6 +77,36 @@
 				
 				google.maps.event.addListener(marker, 'click', function() {
 					this.infowindow.open(map, this);
+				});
+			}
+			
+			//limit area navigation
+			if(last_gps_position.length == 2){
+				first_center = true;
+				
+				//0.1 is 11km more or less
+				var strictBounds = new google.maps.LatLngBounds(
+					new google.maps.LatLng(last_gps_position[0] - 0.3, last_gps_position[1] - 0.3),
+					new google.maps.LatLng(last_gps_position[0] + 0.3, last_gps_position[1] + 0.3)
+				);
+					
+				google.maps.event.addListener(map, 'dragend', function () {
+					if (strictBounds.contains(map.getCenter())) return;
+
+					var c = map.getCenter(),
+						x = c.lng(),
+						y = c.lat(),
+						maxX = strictBounds.getNorthEast().lng(),
+						maxY = strictBounds.getNorthEast().lat(),
+						minX = strictBounds.getSouthWest().lng(),
+						minY = strictBounds.getSouthWest().lat();
+
+					if (x < minX) x = minX;
+					if (x > maxX) x = maxX;
+					if (y < minY) y = minY;
+					if (y > maxY) y = maxY;
+
+					map.setCenter(new google.maps.LatLng(y, x));
 				});
 			}
 		}
@@ -112,7 +137,8 @@
 					"name": "Nome",
 					"message": "Messaggio",
 					"photo": "Foto",
-					"save": "Salva"
+					"save": "Salva",
+					"nobody": "Non ci sono persone nelle vicinanze, riprova tra qualche secondo",
 				},
 				"en": {
 					"error": "Error connecting to server, checking your internet connection, or try again later.",
@@ -123,7 +149,8 @@
 					"name": "Name",
 					"message": "Message",
 					"photo": "Photo",
-					"save": "Save"
+					"save": "Save",
+					"nobody": "There are no people nearby, try again in a few seconds",
 				}
 			};
 			
@@ -800,9 +827,14 @@
 			//add new chat button
 			$add.click(function(){
 				LOG("chat $add.click ",[]);
+				
+				if(userlist == "")
+					show_error(lang.nobody);
+				
 				if(options.view == "map"){
 					$container.html('<div id="chatmap" style="width:100%; height:'+$("#chat_container").height()+'px;"></div>');
 					chatmap();
+					$container.append(userlist);
 				}else
 					$container.html(userlist);
 
