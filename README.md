@@ -74,6 +74,8 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 | `chat_open` | chat_id | When user open a chat, here you can hide a notification (in phonegap for example) |
 | `new_mex` | message | When arrive a new message, here you can show a notification (in phonegap for example) |
 | `profile_update` | profile | When profile is updated, here you can save user data |
+| `send_message` | user_id | When user send message to user_id |
+| `send_new_message` | to_user, display_name, message | useful for create a chatbot, if you want send "hello" to user 54 from "AppBot" set: (54, "AppBot", "hello" |
 | `set_public_key` | public_key | When the public key is generated, here you can save the key |
 | `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, [example](https://github.com/iacoposk8/Ajax-Chat#update-messages) |
 	
