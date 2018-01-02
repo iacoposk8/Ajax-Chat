@@ -17,7 +17,8 @@
 		
 		var userlist = '';
 		var coords_list;
-		var last_gps_position = []
+		var last_gps_position = [];
+		var SELFCHAT = this;
 		this.change_list = function(list, gps){
 			LOG("chat change_list ",[list]);
 			options.list = list;
@@ -262,7 +263,7 @@
 					var $block_mex = $(block_mex).appendTo($("#chat_message"));
 
 					var status_elem = "";
-					if(fromto)
+					if(fromto && srvid != "robot")
 						status_elem = '<div class="chat_info"><div class="chat_date">'+date+'</div><div class="chat_status"><span class="fa fa-clock-o"></span></div></div>';
 					else
 						status_elem = '<div class="chat_info"><div class="chat_date">'+date+'</div></div>';
@@ -946,10 +947,28 @@
 							change_status(e.id,1);
 							if(typeof waiting_mex[mex_for_me] !== "undefined")
 								delete waiting_mex[mex_for_me];
+							
+							if(typeof options.send_message !== "undefined"){
+								options.send_message(chat_id);
+							}
 						}
 					});
 				}
 			});
+			
+			SELFCHAT.send_new_message = function(to_user, botname, message){
+				LOG("SELFCHAT.send_new_message",[to_user, botname, message]);
+
+				message = "<strong>"+botname+":</strong> "+message;
+				var mex_for_you = cryptico.encrypt(message, options.list[to_user].public_key).cipher;
+				var mex_for_me = cryptico.encrypt(message, public_key).cipher;
+
+				A.request({
+					id: "send_message_"+mex_for_me,
+					load:false,
+					data: { send_message : {from:options.current_user.id, to:to_user, mex_for_you:mex_for_you, mex_for_me:mex_for_me} }
+				});
+			}
 			
 			document.addEventListener("backbutton", function(e){
 				if($back.css("display")=="inline")
