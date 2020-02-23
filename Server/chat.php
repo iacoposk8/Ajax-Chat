@@ -10,9 +10,9 @@
 	
 	header('Content-Type: application/json');
 	
-	$col = 'mysql:host=custsql-spro-ipg04.ipagemysql.com;dbname=chat';
-	$username = "chat_user";
-	$password = "LSyZ&[dbU,E6>tNb";
+	$col = 'mysql:XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
+	$username = "XXXXXXXXXXXXXXXXXX";
+	$password = "XXXXXXXXXXXXXXXXXX";
 	$debug = false;
 	
 	try {
