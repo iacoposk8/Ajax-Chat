@@ -26,14 +26,14 @@
 			if(options.view == "map"){
 				coords_list = [];
 				for(var i in list){
-					if(list[i].available=="1"){
+					if(list[i].available){
 						coords_list.push(list[i]);
 					}
 				}
 			}
 			userlist = '';
 			for(var i in list){
-				if(list[i].available=="1")
+				if(list[i].available)
 					userlist += html_row(list[i],list[i].phrase);
 			}
 		}
