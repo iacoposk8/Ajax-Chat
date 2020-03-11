@@ -120,6 +120,7 @@ Now you can open Client/index.html and Client/test.html and start to chat :)
 	{
 		id: "number", //user's id
 		name: "string", //user's name
+		available: true, //if user is available
 		img: "data:image/*;base64", //user's image in base64
 		phrase: "string", //user's personal phrase
 		lat: float, //user's latitude (you have to use if "view" is set like "map")
