@@ -150,7 +150,7 @@ updated_messages: function(messages, success){
 ```
 
 ## TODO
-- Create groups
+- Create groups (Work in progress 20/08/2020)
 - Change status (online, writing, last login)
 - Send file
 - Share messages / contents (inside and outside chat)
