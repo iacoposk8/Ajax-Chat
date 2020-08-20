@@ -11,7 +11,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 - [Libraries of this project](https://github.com/iacoposk8/Ajax-Chat#libraries-of-this-project)
 
 ## Screenshots
-![chat sample](https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Screenshots/phone.jpg)
+![chat sample](https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Images/phone.jpg)
 
 ## Features
 1. Create new chat, send message, read messagge etc... (obviously :D)
