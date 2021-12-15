@@ -1,21 +1,9 @@
--- --------------------------------------------------------
-
---
--- Struttura della tabella `chat_groups`
---
-
 CREATE TABLE `chat_groups` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `owner` int(11) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `img` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `chat_group_users`
---
 
 CREATE TABLE `chat_group_users` (
   `id` int(11) NOT NULL,
@@ -23,68 +11,60 @@ CREATE TABLE `chat_group_users` (
   `id_group` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Struttura della tabella `chat_messages`
---
 
 CREATE TABLE `chat_messages` (
   `id_mex` bigint(20) NOT NULL,
+  `id_mex_merge` varchar(255) NOT NULL COMMENT 'When sending a message, multiple lines are created (one for each user in the group) because each message is encrypted with a different key. Each message will have a different mex_id but an identical merge_id',
   `from_user` bigint(20) NOT NULL,
   `to_group` bigint(20) NOT NULL,
+  `to_user` bigint(20) NOT NULL,
   `message` text NOT NULL,
   `status` int(1) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date2` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `date3` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indici per le tabelle scaricate
---
+CREATE TABLE `chat_status` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_mex` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indici per le tabelle `chat_groups`
---
+CREATE TABLE `chat_users` (
+  `id` bigint(20) NOT NULL,
+  `id_user` bigint(20) NOT NULL,
+  `public_key` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 ALTER TABLE `chat_groups`
   ADD PRIMARY KEY (`id`);
 
---
--- Indici per le tabelle `chat_group_users`
---
 ALTER TABLE `chat_group_users`
   ADD PRIMARY KEY (`id`);
 
---
--- Indici per le tabelle `chat_messages`
---
 ALTER TABLE `chat_messages`
   ADD PRIMARY KEY (`id_mex`);
 
---
--- AUTO_INCREMENT per le tabelle scaricate
---
+ALTER TABLE `chat_status`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_user` (`id_user`,`id_mex`,`status`);
 
---
--- AUTO_INCREMENT per la tabella `chat_groups`
---
+ALTER TABLE `chat_users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_user` (`id_user`);
+
 ALTER TABLE `chat_groups`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT per la tabella `chat_group_users`
---
 ALTER TABLE `chat_group_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT per la tabella `chat_messages`
---
 ALTER TABLE `chat_messages`
   MODIFY `id_mex` bigint(20) NOT NULL AUTO_INCREMENT;
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ALTER TABLE `chat_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `chat_users`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;

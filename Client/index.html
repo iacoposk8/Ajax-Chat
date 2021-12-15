@@ -37,8 +37,7 @@ $(document).ready(function(){
 		custom_item_menu: ["Info", "<strong>About</strong><br />Lorem ipsum...."],
 		view: "list", //map
 		new_mex: function(mex){
-			notify.add(mex.to_group_name, mex.from_user_name + " " + get_lang("chat_write") + " " + mex.to_group_name, mex.mex);
-			notify.show(mex.to_group_name);
+			
         },
         chat_open: function(chat_id){
             if(typeof notification !== "undefined" && typeof notification.close !== "undefined")
@@ -47,7 +46,7 @@ $(document).ready(function(){
 		profile_update: function(profile){
 			//When profile is updated, here you can save user data
 		},
-		current_user: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MX0.M2yGrfQvNBR12enCQaqhDtwrSfPqnM3m2j2yQAl55J0"
+		current_user: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEifQ.U5iVZrxgdmfbNaXQ0-WJrdhXrgyuXIKphTMPNdJAHZU"
 	});
 });
 </script>

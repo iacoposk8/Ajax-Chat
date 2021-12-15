@@ -10,9 +10,9 @@
 	
 	header('Content-Type: application/json');
 	
-	$col = 'mysql:XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
+	$col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
 	$username = "XXXXXXXXXXXXXXXXXX";
-	$password = "XXXXXXXXXXXXXXXXXX";
+	$password = "XXXXXXXXXXXXXXXXXX!";
 	$serverKey = 'XXXXXXXXXXXXXXXXXX';
 	
 	try {
@@ -25,17 +25,17 @@
 		"name" => "users",
 		"columns" => array(
 			"id" => "id",
-			"available" => "true",
+			"available" => "",
 			"lat" => "",
 			"lon" => "",
 			"name" => "name",
-			"img" => "https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Images/user.png",
-			"phrase" => "Hi! I am a new user :)"
+			"img" => "",
+			"phrase" => ""
 		)
 	);
 
 	try {
-		$db = new PDO($col, $credential["user"], $credential["pass"]);
+		$db = new PDO($col, $username, $password);
 	} catch(PDOException $e) {
 		echo $e->getMessage();
 	}
@@ -142,11 +142,19 @@
 		if(isset($user->{$userTable["columns"]["id"]}) && $user->{$userTable["columns"]["id"]} == $current_user){
 			$ret["current_user"] = "1";
 		}
+
+		$default = Array(
+			"available" => "true",
+			"lat" => "",
+			"lon" => "",
+			"img" => "https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Images/user.png",
+			"phrase" => "Hi! I am a new user :)"
+		);
 		foreach($userTable["columns"] as $key => $val){
 			if(isset($user->{$val}))
 				$ret[$key] = $user->{$val};
 			else
-				$ret[$key] = $val;
+				$ret[$key] = $default[$key];
 		}
 		//$ret["public_key"] = $user->{"public_key"};
 		return $ret;
@@ -191,7 +199,7 @@
 	function get_groups_ajax($user, $group_id = "%"){
 		global $userTable;
 
-		$groups = select('SELECT g.id, g.name, g.owner, g.img, u.id_user FROM chat_group_users as u, chat_groups as g WHERE u.id_user = :id AND u.id_group = g.id AND g.id LIKE :group_id', array(":id" => $user, ":group_id" => $group_id));
+		$groups = select('SELECT g.id, g.name, g.owner, u.id_user FROM chat_group_users as u, chat_groups as g WHERE u.id_user = :id AND u.id_group = g.id AND g.id LIKE :group_id', array(":id" => $user, ":group_id" => $group_id));
 
 		foreach($groups as $group){
 			if($group->{"name"} == ""){
@@ -210,7 +218,9 @@
 			return $groups[0];
 	}
 
-	if(@$_GET["create"] == "1"){
+	$sql = $db->prepare('SELECT 1 from chat_messages limit 1');
+	$sql->execute(); 
+	if(!count($sql->fetchAll(PDO::FETCH_CLASS))){
 		//create tables if don't exists
 		$count_table = select('DESCRIBE `chat_messages`',array());
 		if(!count($count_table)){
@@ -218,6 +228,10 @@
 			$db->exec($sql);
 			//print_r($db->errorInfo()); 
 		}
+	}
+
+	if(isset($_GET["get_token"])){
+		die(json_encode(get_token($_GET["get_token"])));
 	}
 
 	if(isset($_POST["get_users"])){
@@ -287,7 +301,7 @@
 				$id = execsql($query, $values);
 
 				if($tkn["id"] == $mex["user"])
-					$ret = select('SELECT m.*, g.name as to_group_name, g.img, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_group = g.id AND m.id_mex = :id AND m.from_user = u.'.$userTable["columns"]["id"], array(":id" => $id));
+					$ret = select('SELECT m.*, g.name as to_group_name, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_group = g.id AND m.id_mex = :id AND m.from_user = u.'.$userTable["columns"]["id"], array(":id" => $id));
 			}
 			die(json_encode($ret));
 		}
@@ -303,7 +317,7 @@
 			$grp = get_groups($tkn["id"]);
 
 			$new_updates = 'SELECT a.*, b.status as partial_status
-			FROM (SELECT m.*, g.name as to_group_name, g.img, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_user = :to_user AND m.to_group = g.id AND m.to_group IN ('.$grp.') AND m.from_user = u.'.$userTable["columns"]["id"].') as a
+			FROM (SELECT m.*, g.name as to_group_name, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_user = :to_user AND m.to_group = g.id AND m.to_group IN ('.$grp.') AND m.from_user = u.'.$userTable["columns"]["id"].') as a
 			LEFT JOIN chat_status as b
 			ON a.id_mex = b.id_mex';
 
@@ -326,7 +340,7 @@
 		global $userTable;
 		$tkn = check_token($_POST["get_last_message_from_all_chat"]["userid"]);
 		if(isset($tkn["id"])){
-			die(json_encode(select('SELECT * FROM (SELECT m.*, g.name as to_group_name, g.img, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_user = :to_user AND m.to_group = g.id AND m.to_group IN ('.get_groups($tkn["id"]).') AND m.from_user = u.'.$userTable["columns"]["id"].' ORDER BY m.date DESC) as a GROUP BY a.to_group', array(":to_user" => $tkn["id"]))));
+			die(json_encode(select('SELECT * FROM (SELECT m.*, g.name as to_group_name, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_user = :to_user AND m.to_group = g.id AND m.to_group IN ('.get_groups($tkn["id"]).') AND m.from_user = u.'.$userTable["columns"]["id"].' ORDER BY m.date DESC) as a GROUP BY a.to_group', array(":to_user" => $tkn["id"]))));
 		}
 	}
 	
@@ -334,7 +348,7 @@
 		global $userTable;
 		$tkn = check_token($_POST["get_chat_messages"]["userid"]);
 		if(isset($tkn["id"]) && in_array($_POST["get_chat_messages"]["group"], explode(",",get_groups($tkn["id"])))){
-			die(json_encode(select('SELECT m.*, g.name as to_group_name, g.img, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_user = :to_user AND m.to_group = g.id AND m.to_group = :to_group AND m.from_user = u.'.$userTable["columns"]["id"].' ORDER BY m.date DESC LIMIT '.$_POST["get_chat_messages"]["n"][0].','.$_POST["get_chat_messages"]["n"][1], array(':to_user' => $tkn["id"], ':to_group' => $_POST["get_chat_messages"]["group"]))));
+			die(json_encode(select('SELECT m.*, g.name as to_group_name, u.'.$userTable["columns"]["name"].' as from_user_name FROM chat_messages as m, chat_groups as g, '.$userTable["name"].' as u WHERE m.to_user = :to_user AND m.to_group = g.id AND m.to_group = :to_group AND m.from_user = u.'.$userTable["columns"]["id"].' ORDER BY m.date DESC LIMIT '.$_POST["get_chat_messages"]["n"][0].','.$_POST["get_chat_messages"]["n"][1], array(':to_user' => $tkn["id"], ':to_group' => $_POST["get_chat_messages"]["group"]))));
 		}
 	}
 	
