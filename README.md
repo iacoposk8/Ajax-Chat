@@ -1,3 +1,4 @@
+
 # Ajax Chat
 Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible with [Phonegap](https://phonegap.com/)
 
@@ -11,7 +12,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 - [Libraries of this project](https://github.com/iacoposk8/Ajax-Chat#libraries-of-this-project)
 
 ## Screenshots
-![chat sample](https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Images/phone.jpg)
+![chat sample](https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Screenshots/phone.jpg)
 
 ## Features
 1. Create new chat, send message, read messagge etc... (obviously :D)
@@ -30,25 +31,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 
 ## Installation
 
-### 1. Database
-Create a new table in your database
-
-```
-CREATE TABLE IF NOT EXISTS chat_messages (
-	id_mex BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	id_pair BIGINT NOT NULL,
-	from_user BIGINT NOT NULL,
-	to_user BIGINT NOT NULL,
-	user_chat BIGINT NOT NULL,
-	message TEXT NOT NULL,
-	status INT(1) NOT NULL,
-	`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`date2` TIMESTAMP NOT NULL,
-	`date3` TIMESTAMP NOT NULL
-);
-```
-
-### 2. Server
+### 1. Server
 Upload "server" folder on your remote server, then open the file Server/chat.php and edit these lines for database connection:
 
 ```
@@ -56,8 +39,28 @@ $col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
 $username = "XXXXXXXXXXXXXXXXXX";
 $password = "XXXXXXXXXXXXXXXXXX";
 ```
-
-### 3. Client
+Then modify the $serverKey variable with a password of your choice (which you will never have to change), this will be used to generate the tokens
+```
+$serverKey = 'XXXXXXXXXXXXXXXXXX';
+```
+Now you need to indicate what is your users table and what the id and name columns are called. For example, if your table has this structure:
+```
+CREATE TABLE `users` (
+  `id_user` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL
+);
+```
+You will need to modify the $userTable to do this:
+```
+$userTable = array(
+	"name" => "users",
+	"columns" => array(
+		"id" => "id_user",
+		"name" => "username"
+	)
+);
+```
+### 2. Client
 Open Client/index.html and Client/test.html and change these line for point to remote php file just uploaded
 
 ```
@@ -65,6 +68,8 @@ server: "http://XXXXXXXXXXXXXXXXXX/chat.php",
 ```
 
 Now you can open Client/index.html and Client/test.html and start to chat :)
+
+**NOTE:** At the first start some tables will be created in your database
 
 ## Method
 
@@ -150,7 +155,7 @@ updated_messages: function(messages, success){
 ```
 
 ## TODO
-- Create groups (Work in progress 20/08/2020)
+- Create groups
 - Change status (online, writing, last login)
 - Send file
 - Share messages / contents (inside and outside chat)
