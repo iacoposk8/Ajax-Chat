@@ -12,27 +12,23 @@
 	
 	$col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
 	$username = "XXXXXXXXXXXXXXXXXX";
-	$password = "XXXXXXXXXXXXXXXXXX!";
+	$password = "XXXXXXXXXXXXXXXXXX";
+
 	$serverKey = 'XXXXXXXXXXXXXXXXXX';
-	
+
+$userTable = array(
+	"name" => "XXXXXXXXXXXXXXXXXX",
+	"columns" => array(
+		"id" => "XXXXXXXXXXXXXXXXXX",
+		"name" => "XXXXXXXXXXXXXXXXXX"
+	)
+);
+
 	try {
 		$db = new PDO($col , $username, $password);
 	} catch(PDOException $e) {
 		echo $e->getMessage();
 	}
-
-	$userTable = array(
-		"name" => "users",
-		"columns" => array(
-			"id" => "id",
-			"available" => "",
-			"lat" => "",
-			"lon" => "",
-			"name" => "name",
-			"img" => "",
-			"phrase" => ""
-		)
-	);
 
 	try {
 		$db = new PDO($col, $username, $password);
