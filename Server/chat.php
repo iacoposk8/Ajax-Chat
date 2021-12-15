@@ -16,13 +16,13 @@
 
 	$serverKey = 'XXXXXXXXXXXXXXXXXX';
 
-$userTable = array(
-	"name" => "XXXXXXXXXXXXXXXXXX",
-	"columns" => array(
-		"id" => "XXXXXXXXXXXXXXXXXX",
-		"name" => "XXXXXXXXXXXXXXXXXX"
-	)
-);
+	$userTable = array(
+		"name" => "XXXXXXXXXXXXXXXXXX",
+		"columns" => array(
+			"id" => "XXXXXXXXXXXXXXXXXX",
+			"name" => "XXXXXXXXXXXXXXXXXX"
+		)
+	);
 
 	try {
 		$db = new PDO($col , $username, $password);
