@@ -67,7 +67,18 @@ Open Client/index.html and Client/test.html and change these line for point to r
 server: "http://XXXXXXXXXXXXXXXXXX/chat.php",
 ```
 
-Now you can open Client/index.html and Client/test.html and start to chat :)
+### 3. Test
+To do a test go to: https://your-site/Client/intex.php?user_id=XXXXXX
+
+instead of the X we need to put the user id that we find in the "users" table (in our example).  
+
+**NOTE:** This is an example only and is not safe! We shouldn't be able to see a user's private chats without a login but simply by guessing its user id.  To make the example safe, you need to edit the line:  
+
+    current_user: "<?php require_once("../Server/chat.php"); echo get_token($_GET['user_id']); ?>"
+
+With something like this:
+
+    current_user: "<?php require_once("../Server/chat.php"); echo get_token(your_login_function()["id"]); ?>"
 
 **NOTE:** At the first start some tables will be created in your database
 

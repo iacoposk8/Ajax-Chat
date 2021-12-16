@@ -46,7 +46,7 @@ $(document).ready(function(){
 		profile_update: function(profile){
 			//When profile is updated, here you can save user data
 		},
-		current_user: "<?php echo $_GET["token"]; ?>"
+		current_user: "<?php require_once("../Server/chat.php"); echo get_token($_GET['user_id']); ?>"
 	});
 });
 </script>

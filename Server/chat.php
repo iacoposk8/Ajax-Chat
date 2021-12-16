@@ -1,6 +1,6 @@
 <?php
 	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
+	ini_set('display_errors', 0);
 
 	header('Access-Control-Allow-Origin: *'); 
 	header("Access-Control-Allow-Credentials: true");
@@ -227,10 +227,6 @@
 			$db->exec($sql);
 			//print_r($db->errorInfo()); 
 		}
-	}
-
-	if(isset($_GET["get_token"])){
-		die(json_encode(get_token($_GET["get_token"])));
 	}
 
 	if(isset($_POST["get_users"])){
