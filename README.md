@@ -68,7 +68,7 @@ server: "http://XXXXXXXXXXXXXXXXXX/chat.php",
 ```
 
 ### 3. Test
-To do a test go to: https://your-site/Client/intex.php?user_id=XXXXXX
+To do a test go to: https://your-site/Client/index.php?user_id=XXXXXX
 
 instead of the X we need to put the user id that we find in the "users" table (in our example).  
 
@@ -82,6 +82,7 @@ With something like this:
 
 **NOTE:** At the first start some tables will be created in your database
 
+## The documentation is being updated (16/12/2021) 
 ## Method
 
 | Method | Params | Description |
