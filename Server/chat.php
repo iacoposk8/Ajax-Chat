@@ -140,18 +140,21 @@
 		}
 
 		$default = Array(
+			"id" => "",
+			"name" => "",
 			"available" => "true",
 			"lat" => "",
 			"lon" => "",
 			"img" => "https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Images/user.png",
 			"phrase" => "Hi! I am a new user :)"
 		);
-		foreach($userTable["columns"] as $key => $val){
-			if(isset($user->{$val}))
-				$ret[$key] = $user->{$val};
+		foreach($default as $key => $val){
+			if(isset($user->{$key}))
+				$ret[$key] = $user->{$key};
 			else
 				$ret[$key] = $default[$key];
 		}
+
 		//$ret["public_key"] = $user->{"public_key"};
 		return $ret;
 	}
@@ -199,7 +202,7 @@
 
 		foreach($groups as $group){
 			if($group->{"name"} == ""){
-				$user = select('SELECT * FROM '.$userTable["name"].' WHERE '.$userTable["columns"]["id"].' = :id', array(":id" => $group->{"id_user"}));
+				$user = select('SELECT u.* FROM '.$userTable["name"].' as u, chat_group_users as g WHERE g.id_user = u.'.$userTable["columns"]["id"].' AND g.id_user != :id', array(":id" => $group->{"id_user"}));
 				$usr = get_user($user[0]);
 				$group->{"name"} = $usr["name"];
 				$group->{"img"} = $usr["img"];
