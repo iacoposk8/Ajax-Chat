@@ -1,4 +1,5 @@
 
+
 # Ajax Chat
 Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible with [Phonegap](https://phonegap.com/)
 
@@ -87,14 +88,12 @@ With something like this:
 
 | Method | Params | Description |
 | --- | --- | --- |
-| `change_list` | userlist, [latitude, longitude] | When the user list or geoposition (optional) is changed you can launch this function to update it |
-| `chat_open` | chat_id | When user open a chat, here you can hide a notification (in phonegap for example) |
-| `new_mex` | message | When arrive a new message, here you can show a notification (in phonegap for example) |
-| `profile_update` | profile | When profile is updated, here you can save user data |
+| `chat_open` | chat_id | When user open a chat |
+| `new_mex` | message | When arrive a new message |
+| `profile_update` | profile | When profile is updated |
 | `send_message` | user_id | When user send message to user_id |
-| `send_new_message` | to_user, display_name, message | useful for create a chatbot, if you want send "hello" to user 54 from "AppBot" set: (54, "AppBot", "hello" |
-| `set_public_key` | public_key | When the public key is generated, here you can save the key |
-| `updated_messages` | messages, success | When messages are read and "locale" is true, here you can save the messages and launch success(messages), for remove data from database, [example](https://github.com/iacoposk8/Ajax-Chat#update-messages) |
+| `group` | detail, callback | Create a new group. [detail](https://github.com/iacoposk8/Ajax-Chat#create-a-goup) (`name` and `users` are mandatory) |
+| `send_new_message` | to_user, display_name, message | useful for create a chatbot, if you want send "hello" to user 54 from "AppBot" set: `chat.send_new_message(54, "AppBot", "hello")` |
 	
 ## Property
 
@@ -151,18 +150,14 @@ With something like this:
 }
 ```
 
-### Update messages
+### Create a group
 
 ```
-updated_messages: function(messages, success){
-	$.ajax({
-		url: "http://localhost/savechat.php",
-		method: "POST",
-		data: {set: messages]},
-		success: function(){
-			success(messages);
-		}
-	});
+{
+		name: "Group name", 
+		users: [id_user, id_user, id_user...], 
+		img: "url image", 
+		id: group_id_to_edit, 
 }
 ```
 
