@@ -92,7 +92,7 @@ With something like this:
 | `new_mex` | message | When arrive a new message |
 | `profile_update` | profile | When profile is updated |
 | `send_message` | user_id | When user send message to user_id |
-| `group` | detail, callback | Create a new group. [detail](https://github.com/iacoposk8/Ajax-Chat#create-a-goup) (`name` and `users` are mandatory) |
+| `group` | detail, callback | Create a new group. [detail](https://github.com/iacoposk8/Ajax-Chat#create-a-group) (`name` and `users` are mandatory) |
 | `send_new_message` | to_user, display_name, message | useful for create a chatbot, if you want send "hello" to user 54 from "AppBot" set: `chat.send_new_message(54, "AppBot", "hello")` |
 	
 ## Property
