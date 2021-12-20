@@ -30,6 +30,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 11. We have many smiles ;)
 12. Messages status (sent, delivered, read. like [whatsapp](https://faq.whatsapp.com/en/general/20951546))
 13. Load old messages when you scroll up
+14. Create groups
 
 ## Installation
 
@@ -84,7 +85,6 @@ With something like this:
 
 **NOTE:** At the first start some tables will be created in your database
 
-## The documentation is being updated (16/12/2021) 
 ## Method
 
 | Method | Params | Description |
@@ -102,21 +102,21 @@ With something like this:
 | --- | --- | --- |
 | `color` | (array) ["#2ecc71","#3498db","#e2ffc4","#eee"] | colors of the chat |
 | `current_user` | (string) token | Current user token. You can generate the token with php function in Server/chat.php - `get_token($user_id);` |
-| `custom_head` | | Here you can add the html code to add to the head |
-| `custom_item_menu` | ["Info", "<strong>About</strong><br />Lorem ipsum...."] | This add a new item menu "Info" when write inside "<strong>About</strong><br />Lorem ipsum...." |
-| `debug` | false | if you want to see console.log for debug |
-| `lang` | en | languages available english (en) and italian (it) |
-| `load_message` | 10 | Number of messages to load when you scroll up |
-| `path` | chat | If you rename the path "Client/chat" you have to change also here |
-| `server` | http://XXXXXXXXXXXXXXXXXX/chat.php | This is the remote url (file Server/chat.php see the [installation](https://github.com/iacoposk8/Ajax-Chat#installation)) |
-| `view` | list | you can view the user like a "list" or in a "map" (for this you have to set "lat" and "lon" in "list" property) |
+| `custom_head` | (string) "html code" | Here you can add the html code to add to the head |
+| `custom_item_menu` | (array) ["Info", "<strong>About</strong><br />Lorem ipsum...."] | This add a new item menu "Info" when write inside "<strong>About</strong><br />Lorem ipsum...." |
+| `debug` | (bool) false | if you want to see console.log for debug |
+| `lang` | (string) en | languages available english (en) and italian (it) |
+| `load_message` | (int) 10 | Number of messages to load when you scroll up |
+| `path` | (string) chat_folder | If you rename the path "Client/chat" you have to change also here |
+| `server` | (string) url_chat.php | This is the remote url (file Server/chat.php see the [installation](https://github.com/iacoposk8/Ajax-Chat#installation)) |
+| `view` | (string) list | you can view the user like a "list" or in a "map" (for this you have to set "lat" and "lon" in "list" property) |
 
 ## TODO
-- Create groups
 - Change status (online, writing, last login)
 - Send file
 - Share messages / contents (inside and outside chat)
 - Delete, copy, info, star icone the message
+- Vocal notes
 
 ## Libraries of this project
 - [jQuery](https://jquery.com/)
