@@ -32,7 +32,7 @@ Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible w
 ## Installation
 
 ### 1. Server
-Upload "server" folder on your remote server, then open the file Server/chat.php and edit these lines for database connection:
+Upload "server" folder on your remote server, then open the file Server/config.php and edit these lines for database connection:
 
 ```
 $col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
