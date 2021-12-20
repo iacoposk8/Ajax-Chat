@@ -10,19 +10,7 @@
 	
 	header('Content-Type: application/json');
 	
-	$col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
-	$username = "XXXXXXXXXXXXXXXXXX";
-	$password = "XXXXXXXXXXXXXXXXXX";
-
-	$serverKey = 'XXXXXXXXXXXXXXXXXX';
-
-	$userTable = array(
-		"name" => "XXXXXXXXXXXXXXXXXX",
-		"columns" => array(
-			"id" => "XXXXXXXXXXXXXXXXXX",
-			"name" => "XXXXXXXXXXXXXXXXXX"
-		)
-	);
+	require_once("config.php");
 
 	try {
 		$db = new PDO($col , $username, $password);
@@ -375,8 +363,8 @@
 				if(isset($_POST["group"]["img"]))
 					execsql("UPDATE chat_groups set img = :img WHERE owner = :owner AND id = :id", array(":img" => $_POST["group"]["img"], ":owner" => $tkn["id"], ":id" => $id));
 
-				//if(isset($_POST["group"]["users"]))
-					//execsql("DELETE FROM chat_group_users WHERE id_group = :id_group", array(":id_group" => $id));
+				if(count($_POST["group"]["users"]))
+					execsql("DELETE FROM chat_group_users WHERE id_group = :id_group", array(":id_group" => $id));
 			} else { //new group
 				if(!isset($_POST["group"]["img"]))
 					$img = "https://raw.githubusercontent.com/iacoposk8/Ajax-Chat/master/Images/group.png";

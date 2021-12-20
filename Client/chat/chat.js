@@ -153,7 +153,8 @@
 					"new_group": "Nuovo gruppo",
 					"add_users": "Aggiungi partecipanti",
 					"added_to_group": "Sei stato aggiunto al gruppo",
-					"group_error": "Seleziona i partecipanti al gruppo o un nome"
+					"group_error": "Seleziona i partecipanti al gruppo o un nome",
+					"edit_group": "Modifica gruppo"
 				},
 				"en": {
 					"error": "Error connecting to server, checking your internet connection, or try again later.",
@@ -169,7 +170,8 @@
 					"new_group": "New group",
 					"add_users": "Add attendees",
 					"added_to_group": "You have been added to the group",
-					"group_error": "Select the group participants or a name"
+					"group_error": "Select the group participants or a name",
+					"edit_group": "Edit group"
 				}
 			};
 			
@@ -820,6 +822,7 @@
 					$back.css("display","none");
 					$custom.css("display","block");
 					$name.css("display","none");
+					$edit_group.css("display","none");
 				}
 				if(type == "chat"){
 					$profile.css("display","none");
@@ -828,6 +831,7 @@
 					$back.css("display","inline");
 					$custom.css("display","block");
 					$name.css("display","inline-block");
+					$edit_group.css("display","none");
 				}
 				if(type == "chat_block"){ //when you block a user
 					$profile.css("display","none");
@@ -836,6 +840,25 @@
 					$back.css("display","inline");
 					$custom.css("display","block");
 					$name.css("display","inline-block");
+					$edit_group.css("display","none");
+				}
+				if(type == "chat_group_owner"){
+					$profile.css("display","none");
+					$block.css("display","none");
+					$unblock.css("display","none");
+					$back.css("display","inline");
+					$custom.css("display","block");
+					$name.css("display","inline-block");
+					$edit_group.css("display","block");
+				}
+				if(type == "chat_group"){
+					$profile.css("display","none");
+					$block.css("display","none");
+					$unblock.css("display","none");
+					$back.css("display","inline");
+					$custom.css("display","block");
+					$name.css("display","inline-block");
+					$edit_group.css("display","none");
 				}
 				if(type == "generic"){ //user menu for example
 					$profile.css("display","block");
@@ -844,6 +867,7 @@
 					$back.css("display","inline");
 					$custom.css("display","block");
 					$name.css("display","none");
+					$edit_group.css("display","none");
 				}
 				set_menu_last_type = type;
 			}
@@ -927,7 +951,14 @@
 			}
 
 			function start_user_chat(group_id){
-				set_menu("chat");
+				if(groups[group_id]["owner"] == options.current_user.id){
+					set_menu("chat_group_owner");
+					$edit_group.attr("attr-groups-id", group_id);
+				}
+				else if(groups[group_id]["users"].length >= 3)
+					set_menu("chat_group");
+				else
+					set_menu("chat");
 				
 				$container.html("");
 				$add.css("display","none");
@@ -1057,6 +1088,7 @@
 			
 			var $profile = $('<div id="chat_profile">'+lang.profile+'</div>').appendTo($menu);
 			var $block = $('<div id="chat_block">'+lang.block+'</div>').appendTo($menu);
+			var $edit_group = $('<div id="edit_group">'+lang.edit_group+'</div>').appendTo($menu);
 			var $unblock = $('<div id="chat_unblock" style="display:none;">'+lang.unblock+'</div>').appendTo($menu);
 			if(typeof options.custom_item_menu === "undefined")
 				options.custom_item_menu = ["Credits","<h1><strong>Credits</strong></h1>"];
@@ -1074,17 +1106,37 @@
 				new_size();
 			});*/
 
+			function new_edit_group(id, name, users){
+				if(typeof name === "undefined")
+					name = "";
+				if(typeof id === "undefined")
+					id = "";
 
-			//new group
-			$(document).delegate("#new_group", "click", function(e){
-				e.stopImmediatePropagation();
 				var new_group = "";	
 				new_group += '<div id="new_group_container">';
-				new_group += lang.group_name + ' <input id="new_group_name" /> ';
+				new_group += lang.group_name + ' <input id="new_group_name" value="'+name+'" /> ';
+				new_group += '<input id="edit_group_id" value="'+id+'" type="hidden" /> ';
 				new_group += '<button class="button" id="save_group">'+lang.save+'</button><br /><br />' + lang.add_users;
 				new_group += userlist;
 				new_group += '</div>';
 				$container.html(new_group);
+
+				if(typeof users !== "undefined")
+					for(var i in users)
+						$('div.chat_user[attr-users-id="'+users[i]["id_user"]+'"]').click();
+			}
+
+			$edit_group.click(function(){
+				LOG("chat $edit_group.click ",[]);
+				var group = groups[$(this).attr("attr-groups-id")];
+				new_edit_group(group["id"], group["name"], group["users"]);
+			});
+			
+			//new group
+			$(document).delegate("#new_group", "click", function(e){
+				LOG("#new_group.click ",[]);
+				e.stopImmediatePropagation();
+				new_edit_group();
 			});
 
 			//add users to group
@@ -1162,7 +1214,7 @@
 					send_profile_data("");
 				}
 			});
-			
+
 			//block user
 			$block.click(function(){
 				LOG("chat $block.click ",[]);
@@ -1276,7 +1328,11 @@
 			});
 
 			$(document).delegate("#save_group", "click", function(){
-				create_group({"name": $("#new_group_name").val(), "users": users_group});
+				var id_edit_group = $("#edit_group_id").val();
+				if(id_edit_group == "")
+					create_group({"name": $("#new_group_name").val(), "users": users_group});
+				else
+					create_group({"group_id": id_edit_group,"name": $("#new_group_name").val(), "users": users_group});
 			});
 
 			$(".fa-backspace.search_icon").click(function(){
