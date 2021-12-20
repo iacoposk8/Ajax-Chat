@@ -1,5 +1,6 @@
 
 
+
 # Ajax Chat
 Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible with [Phonegap](https://phonegap.com/)
 
@@ -92,74 +93,23 @@ With something like this:
 | `new_mex` | message | When arrive a new message |
 | `profile_update` | profile | When profile is updated |
 | `send_message` | user_id | When user send message to user_id |
-| `group` | detail, callback | Create a new group. [detail](https://github.com/iacoposk8/Ajax-Chat#create-a-group) (`name` and `users` are mandatory) |
+| `group` | detail, callback | Create a new group. detail: `{name: "Group name", users: [id_user, id_user, id_user...], img: "url image", id: group_id_to_edit}` (`name` and `users` are mandatory) |
 | `send_new_message` | to_user, display_name, message | useful for create a chatbot, if you want send "hello" to user 54 from "AppBot" set: `chat.send_new_message(54, "AppBot", "hello")` |
 	
 ## Property
 
 | Property | Default | Description |
 | --- | --- | --- |
-| `color` | ["#2ecc71","#3498db","#e2ffc4","#eee"] | colors of the chat |
-| `current_user` | | Current user info: [structure](https://github.com/iacoposk8/Ajax-Chat#current-user) |
+| `color` | (array) ["#2ecc71","#3498db","#e2ffc4","#eee"] | colors of the chat |
+| `current_user` | (string) token | Current user token. You can generate the token with php function in Server/chat.php - `get_token($user_id);` |
 | `custom_head` | | Here you can add the html code to add to the head |
 | `custom_item_menu` | ["Info", "<strong>About</strong><br />Lorem ipsum...."] | This add a new item menu "Info" when write inside "<strong>About</strong><br />Lorem ipsum...." |
 | `debug` | false | if you want to see console.log for debug |
-| `height` | 500px | height of the chat |
 | `lang` | en | languages available english (en) and italian (it) |
-| `list` | | List of chat users, [structure](https://github.com/iacoposk8/Ajax-Chat#list-users) |
-| `locale` | true | if you want to storage the message in locale set true, if you want all messages in the remote database set false |
 | `load_message` | 10 | Number of messages to load when you scroll up |
-| `messages` | | if "locale" is true and with "updated_messages" method you have saved the messages, you can restore it in this property |
 | `path` | chat | If you rename the path "Client/chat" you have to change also here |
 | `server` | http://XXXXXXXXXXXXXXXXXX/chat.php | This is the remote url (file Server/chat.php see the [installation](https://github.com/iacoposk8/Ajax-Chat#installation)) |
 | `view` | list | you can view the user like a "list" or in a "map" (for this you have to set "lat" and "lon" in "list" property) |
-
-## Structures
-
-### Current user
-
-```
-{
-	id: "number", //user's id
-	name: "string", //user's name
-	img: "data:image/*;base64", //user's image in base64
-	phrase: "string", //user's personal phrase
-	key: "string" //key for generate the encryption key
-}
-```
-
-### List users
-
-```
-{
-	"number": //user's id
-	{
-		id: "number", //user's id
-		name: "string", //user's name
-		available: true, //if user is available
-		img: "data:image/*;base64", //user's image in base64
-		phrase: "string", //user's personal phrase
-		lat: float, //user's latitude (you have to use if "view" is set like "map")
-		lon: float, //user's longitude (you have to use if "view" is set like "map")
-		public_key: "string" //user's public key for crittography generate from "set_public_key" method
-	},
-	"number": { ....... },
-	"number": { ....... },
-	"number": { ....... },
-	.......
-}
-```
-
-### Create a group
-
-```
-{
-		name: "Group name", 
-		users: [id_user, id_user, id_user...], 
-		img: "url image", 
-		id: group_id_to_edit, 
-}
-```
 
 ## TODO
 - Create groups
