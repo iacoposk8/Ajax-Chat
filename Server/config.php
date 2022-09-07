@@ -1,14 +1,14 @@
 <?php
-	$col = 'mysql:host=XXXXXXXXXXXXXXXXXX;dbname=XXXXXXXXXXXXXXXXXX';
-	$username = "XXXXXXXXXXXXXXXXXX";
-	$password = "XXXXXXXXXXXXXXXXXX";
+	$col = 'mysql:host=iacoposk8.ipagemysql.com;dbname=daeliminare';
+	$username = "group";
+	$password = "nnq*]()N3V+*x)Ku";
 
 	$serverKey = 'XXXXXXXXXXXXXXXXXX';
 
 	$userTable = array(
-		"name" => "XXXXXXXXXXXXXXXXXX",
+		"name" => "users",
 		"columns" => array(
-			"id" => "XXXXXXXXXXXXXXXXXX",
-			"name" => "XXXXXXXXXXXXXXXXXX"
+			"id" => "id",
+			"name" => "name"
 		)
 	);

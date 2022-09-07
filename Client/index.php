@@ -29,7 +29,7 @@
 $(document).ready(function(){
 	chat = $("#chat").chat({
 		path: "chat",
-		server: "XXXXXXXXXXXXXXXXXX/chat.php",
+		server: "https://iacoposk8.ipage.com/daeliminare/Server/chat.php",
 		color: ["#2ecc71","#3498db","#e2ffc4","#eee"],
 		debug:false,
 		lang: "it",

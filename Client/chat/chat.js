@@ -69,7 +69,7 @@
 				var latlng = new google.maps.LatLng(last_gps_position[0], last_gps_position[1]);
 			} else
 				var latlng = new google.maps.LatLng(48.1034995,12.262864);
-			var options = { 
+			var options_map = { 
 				maxZoom: 20,
 				minZoom: 12,
 				zoom: 12, 
@@ -78,7 +78,7 @@
 			};
 			
 			// crea l'oggetto mappa
-			var map = new google.maps.Map($("#chatmap")[0], options);
+			var map = new google.maps.Map($("#chatmap")[0], options_map);
 
 			for(var i in coords_list){
 				mar_cord = new google.maps.LatLng(parseFloat(coords_list[i].lat), parseFloat(coords_list[i].lon));
