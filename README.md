@@ -1,5 +1,4 @@
-
-
+[![Support me](https://iacoposk8.github.io/img/buymepizza.png)](https://buymeacoffee.com/iacoposk8)
 
 # Ajax Chat
 Ajax Chat is a complete web chat in javascript, ajax, php and mysql compatible with [Phonegap](https://phonegap.com/)
